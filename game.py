@@ -13,7 +13,7 @@ SIZE = 4
 
 #from tkinter import Tk, PhotoImage - а вот так можно
 main_window = tkinter.Tk();
-main_window.title('Игра 15')
+main_window.title('Game 15')
 
 file_list = sorted(os.listdir(IMG_PATH))
 
@@ -55,11 +55,9 @@ for x, image in enumerate(images_list):
     label.column = column
     labels_list.append(label)
 
-static_list = labels_list
-
 
 # в качестве текущего выбран белый квадрат
-curr = labels_list[-1] # - индексы можно зацикливать (-1 = size + 1)
+curr = labels_list[15] # - индексы можно зацикливать (-1 = size + 1)
 
 
 def upperItem(arg):
@@ -100,35 +98,47 @@ shuffle = False
 
 def stepsMove():
     if (not shuffle):
-        steps = tkinter.Label(main_window, text='Шагов сделано: ' + str(0))
+        steps = tkinter.Label(main_window, text='Steps taken: ' + str(0))
         steps.grid(row=5, column=0)
     elif (shuffle):
         global step
         step += 1
-        steps = tkinter.Label(main_window, text='Шагов сделано: ' + str(step))
+        steps = tkinter.Label(main_window, text='Steps taken: ' + str(step))
         steps.grid(row=5, column=0)
 
-    
+
+
+def testing():
+    flag = True
+
+    for i, elem in enumerate(labels_list):
+        if elem.x != i:
+            flag = False
+
+    if (shuffle == True and flag == True):
+        messagebox.showinfo('Excellent!', 'You win!')
+        sys.exit(0)
+
+
 def keyPress(arg):
     near = None
     global step
+
     if arg == 'u' and curr.row > 0:
         near = upperItem(curr)
-        stepsMove()
     elif arg == 'd' and curr.row < SIZE - 1:
         near = lowerItem(curr)
-        stepsMove()
     elif arg == 'l' and curr.column > 0:
         near = leftItem(curr)
-        stepsMove()
     elif arg == 'r' and curr.column < SIZE - 1:
         near = rightItem(curr)
-        stepsMove()
     elif arg == 'q':
         sys.exit()
 
     if near:
         exchangeItems(near) # - меняет местами curr с near
+        stepsMove()
+        testing()
         renderItem(near)
         renderItem(curr)
 
@@ -142,7 +152,7 @@ def shuffleGame():
 
     global shuffle
     shuffle = True
-        
+
 
 # здесь мы заставим программу реагировать на события
 main_window.bind('<Up>', lambda x: keyPress('u'))
