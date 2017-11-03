@@ -166,7 +166,7 @@ main_window.bind('q', lambda x: keyPress('q'))
 main_window.bind('Q', lambda x: keyPress('Q'))
 
 
-label = tkinter.Label(main_window, text = 'Игра началась')
+label = tkinter.Label(main_window, text = 'Game is on!')
 label.grid(row = 4, column = 0)
 
 
